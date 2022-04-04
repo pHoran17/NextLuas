@@ -1,11 +1,55 @@
+import axios from 'axios';
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import { Header } from '../components/Header';
+//import axios from 'axios';
 
 
 export default class HomeScreen extends React.Component
 {
+    /*useEffect(() => {
+        axios.get('https://luasforecasts.rpa.ie/analysis/view.aspx?id=48').then(res => {
+            if(res.status == 200){
+                console.log(res);
+            }
+        }).catch(function(err){
+            console.log(err);
+        });
+    },[]);
+    */
+   constructor(props)
+   {
+       super(props);
+       this.state = {
+           stationData:[]
+       };
+   }
+   //Currently returns whole web page, create way to convert data in table below monitoring row to JSON
+   async componentDidMount()
+   {
+    const url = 'https://luasforecasts.rpa.ie/analysis/view.aspx?id=48';
+
+    const sRequest = {
+        headers:{
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        responseType: 'json',
+        url: url
+    };
+    await axios.get(url, sRequest).then(res => {
+            if(res.status == 200){
+                console.log(res.data);
+                this.setState({stationData: res});
+            }
+        }).catch(function(err){
+            console.log(err);
+        });
     
+   }
+
+
     render()
     {
         return(
